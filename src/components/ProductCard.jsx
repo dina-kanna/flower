@@ -1,169 +1,130 @@
-import { Heart, ShoppingCart, Star, ArrowUpRight, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useShop } from "../context/ShopContext";
+import { motion } from "framer-motion";
+import {
+  Heart,
+  ShoppingBag,
+  Star,
+  Eye,
+} from "lucide-react";
 
-export default function ProductCard({ product, onView }) {
-  const { addToCart, toggleWishlist, isWishlisted } = useShop();
+export default function ProductCard({
+  product,
+  isWishlisted,
+  onWishlist,
+  onAddCart,
+  onDetails,
+}) {
+  // If product is undefined or null, don't render anything to prevent crashing
+  if (!product) return null;
 
-  const liked = isWishlisted(product.id);
+  // Safe calculation in case oldPrice is missing
+  const discount = product.oldPrice
+    ? Math.round(
+        ((product.oldPrice - product.price) / product.oldPrice) * 100
+      )
+    : 0;
 
   return (
-    <article className="group relative bg-white rounded-[2rem] overflow-hidden border border-green-100 shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-3">
+    <motion.article
+      layout
+      whileHover={{ y: -8 }}
+      className="group overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm transition duration-500 hover:shadow-2xl hover:shadow-rose-100"
+    >
+      {/* Image */}
+      <div className="relative h-72 overflow-hidden bg-rose-50">
+        <img
+          src={product.image}
+          alt={product.name}
+          className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+        />
 
-      <div className="relative h-80 overflow-hidden bg-green-50">
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
 
-        <Link to={`/product/${product.id}`} className="block w-full h-full">
-          <img
-            src={product.image}
-            alt={product.name}
-            loading="lazy"
-            className="w-full h-full object-cover object-center
-            group-hover:scale-110 transition-transform duration-700 ease-out"
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-green-950/70 via-transparent to-transparent opacity-80" />
-        </Link>
-
-        <div className="absolute top-4 left-4">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white/90 backdrop-blur-md text-green-800 text-xs font-bold shadow-lg">
-            <Sparkles size={13} />
-            {product.category}
+        {/* Badge */}
+        {product.badge && (
+          <span className="absolute left-4 top-4 rounded-full bg-white px-3 py-1 text-xs font-bold text-rose-500 shadow">
+            {product.badge}
           </span>
-        </div>
+        )}
 
+        {/* Discount - Only shown if oldPrice exists */}
+        {product.oldPrice && (
+          <span className="absolute bottom-4 left-4 rounded-full bg-gray-900 px-3 py-1 text-xs font-bold text-white">
+            {discount}% OFF
+          </span>
+        )}
+
+        {/* Wishlist */}
         <button
-          type="button"
-          onClick={() => toggleWishlist(product)}
-          aria-label={
-            liked
-              ? `Remove ${product.name} from wishlist`
-              : `Add ${product.name} to wishlist`
-          }
-          className={`absolute top-4 right-4 w-11 h-11 rounded-full
-          backdrop-blur-md bg-white/90 flex items-center justify-center
-          shadow-lg transition-all duration-300
-          hover:scale-110 active:scale-95
-          ${
-            liked
-              ? "text-red-500"
-              : "text-green-900 hover:text-red-500"
-          }`}
+          onClick={() => onWishlist(product)}
+          className="absolute right-4 top-4 rounded-full bg-white p-3 shadow-md transition hover:scale-110 hover:bg-rose-500 hover:text-white"
         >
           <Heart
-            size={20}
-            fill={liked ? "currentColor" : "none"}
-            className="transition-transform duration-300"
+            size={18}
+            className={isWishlisted ? "fill-current text-rose-500" : ""}
           />
         </button>
 
-        <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
-          <div>
-            <p className="text-white/80 text-xs font-medium">
-              Naturally grown
-            </p>
-            <p className="text-white font-semibold text-sm">
-              Healthy & Fresh
-            </p>
-          </div>
-
-          <Link
-            to={`/product/${product.id}`}
-            className="w-10 h-10 rounded-full bg-white/95 flex items-center justify-center
-            text-green-800 shadow-lg
-            hover:bg-green-700 hover:text-white
-            transition-all duration-300
-            group-hover:rotate-6"
+        {/* Hover buttons */}
+        <div className="absolute bottom-4 right-4 flex translate-y-14 gap-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          <button
+            onClick={() => onDetails(product)}
+            className="rounded-full bg-white p-3 shadow-lg hover:bg-gray-900 hover:text-white"
           >
-            <ArrowUpRight size={19} />
-          </Link>
+            <Eye size={18} />
+          </button>
+
+          <button
+            onClick={() => onAddCart(product)}
+            className="rounded-full bg-rose-500 p-3 text-white shadow-lg hover:bg-rose-600"
+          >
+            <ShoppingBag size={18} />
+          </button>
         </div>
       </div>
 
-      <div className="p-5 sm:p-6">
-
-        <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-green-500">
-         TerraBloom Nursery Collection
+      {/* Content */}
+      <div className="p-5">
+        <p className="text-xs font-semibold uppercase tracking-wider text-rose-400">
+          {product.category}
         </p>
 
-        <Link to={`/product/${product.id}`}>
-          <h3 className="mt-1.5 text-xl font-extrabold text-green-950
-          group-hover:text-green-700 transition-colors duration-300">
-            {product.name}
-          </h3>
-        </Link>
+        <h3 className="mt-2 text-lg font-bold text-gray-900 transition group-hover:text-rose-500">
+          {product.name}
+        </h3>
 
-        <div className="flex items-center gap-2 mt-3">
-          <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-yellow-50">
-            <Star
-              size={15}
-              className="text-yellow-500"
-              fill="currentColor"
-            />
-
-            <span className="text-sm font-bold text-yellow-700">
-              {product.rating}
-            </span>
+        <div className="mt-2 flex items-center gap-2">
+          <div className="flex items-center gap-1 text-sm text-amber-500">
+            <Star size={15} className="fill-current" />
+            {product.rating}
           </div>
 
-          <span className="text-sm text-gray-400">
-            {product.reviews} reviews
+          <span className="text-xs text-gray-400">
+            ({product.reviews} reviews)
           </span>
         </div>
 
-        <div className="h-px bg-green-100 my-5" />
-
-        <div className="flex items-center justify-between gap-3">
-
+        <div className="mt-4 flex items-center justify-between">
           <div>
-            <p className="text-xs text-gray-400 mb-0.5">
-              Starting from
-            </p>
-
-            <span className="text-2xl font-black text-green-800">
-              ₹{product.price.toLocaleString("en-IN")}
+            <span className="text-xl font-black text-gray-900">
+              ₹{product.price?.toLocaleString("en-IN")}
             </span>
+
+            {product.oldPrice && (
+              <span className="ml-2 text-sm text-gray-400 line-through">
+                ₹{product.oldPrice.toLocaleString("en-IN")}
+              </span>
+            )}
           </div>
-
-          <button
-            type="button"
-            onClick={() => addToCart(product)}
-            className="group/cart flex items-center gap-2
-            px-4 py-3 rounded-2xl
-            bg-gradient-to-r from-green-600 to-emerald-700
-            text-white font-bold text-sm
-            shadow-lg shadow-green-700/20
-            hover:from-green-700 hover:to-green-800
-            hover:shadow-xl hover:shadow-green-700/30
-            active:scale-95
-            transition-all duration-300"
-          >
-            <ShoppingCart
-              size={17}
-              className="group-hover/cart:-rotate-6 transition-transform"
-            />
-
-            <span>Add</span>
-          </button>
         </div>
 
-        
-        {onView && (
-          <button
-            type="button"
-            onClick={() => onView(product)}
-            className="w-full mt-4 py-2.5 rounded-xl
-            border border-green-200
-            text-green-700 text-sm font-semibold
-            hover:bg-green-50 hover:border-green-300
-            transition-all duration-300"
-          >
-            Quick View
-          </button>
-        )}
+        <button
+          onClick={() => onAddCart(product)}
+          className="mt-5 w-full rounded-2xl bg-gray-900 py-3 font-semibold text-white transition duration-300 hover:-translate-y-1 hover:bg-rose-500 hover:shadow-lg hover:shadow-rose-200"
+        >
+          Add to Cart
+        </button>
       </div>
-
-      <div className="absolute inset-0 rounded-[2rem] ring-1 ring-transparent
-      group-hover:ring-green-300 pointer-events-none transition-all duration-500" />
-    </article>
+    </motion.article>
   );
 }
