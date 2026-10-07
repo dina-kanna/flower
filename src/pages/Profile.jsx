@@ -15,7 +15,7 @@ const Profile = () => {
   const [userProfile, setUserProfile] = useState({
     name: "Dinesh",
     email: "dinesh@terrabloom.com",
-    phone: "+91 98765 43210",
+    phone: "+91 98765 98657",
     memberSince: "January 2025",
   });
 
