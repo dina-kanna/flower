@@ -76,7 +76,6 @@ const Profile = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Profile Hero Section */}
         <section className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem] shadow-xl">
           <img
             src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=1800&q=90"
@@ -91,7 +90,6 @@ const Profile = () => {
 
           <div className="relative z-10 p-5 sm:p-10 lg:p-14">
 
-            {/* Top Bar: Brand & Back to Home Button */}
             <div className="flex items-center justify-between gap-4 mb-8 sm:mb-12">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-lime-300 to-emerald-500 flex items-center justify-center shadow-lg shrink-0">
@@ -142,7 +140,6 @@ const Profile = () => {
           </div>
         </section>
 
-        {/* Quick Stats Grid */}
         <section className="relative -mt-6 sm:-mt-8 mx-2 sm:mx-8 lg:mx-14 z-20">
           <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-green-100 p-3 sm:p-5">
             <div className="grid grid-cols-3 divide-x divide-green-100">
@@ -181,7 +178,6 @@ const Profile = () => {
           </div>
         </section>
 
-        {/* Navigation Tabs - Horizontally Scrollable on Mobile */}
         <div className="mt-8 sm:mt-12 overflow-x-auto pb-2 scrollbar-none">
           <div className="flex items-center gap-2 border-b border-green-200 pb-3 min-w-max">
             {[
@@ -210,7 +206,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Tab Content: Overview */}
         {activeTab === "overview" && (
           <div className="space-y-12 animate-in fade-in duration-300">
             <section className="mt-6 sm:mt-8">
@@ -271,7 +266,6 @@ const Profile = () => {
           </div>
         )}
 
-        {/* Tab Content: Orders */}
         {activeTab === "orders" && (
           <section className="mt-6 sm:mt-8 space-y-4 animate-in fade-in duration-300">
             <div className="flex items-center justify-between mb-4">
@@ -324,7 +318,6 @@ const Profile = () => {
           </section>
         )}
 
-        {/* Tab Content: Addresses */}
         {activeTab === "addresses" && (
           <section className="mt-6 sm:mt-8 space-y-6 animate-in fade-in duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -383,7 +376,6 @@ const Profile = () => {
           </section>
         )}
 
-        {/* Tab Content: Settings */}
         {activeTab === "settings" && (
           <section className="mt-6 sm:mt-8 space-y-6 animate-in fade-in duration-300">
             <div className="bg-white rounded-2xl sm:rounded-[2rem] border border-green-100 shadow-sm p-5 sm:p-8">
@@ -428,7 +420,6 @@ const Profile = () => {
           </section>
         )}
 
-        {/* Footer Callout */}
         <section className="mt-12 sm:mt-14">
           <div className="rounded-2xl sm:rounded-[2rem] bg-gradient-to-r from-green-700 to-emerald-800 p-5 sm:p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-5 shadow-xl shadow-green-900/10">
             <div className="flex items-center gap-4 text-center sm:text-left">
